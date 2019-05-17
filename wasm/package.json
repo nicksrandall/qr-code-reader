@@ -1,0 +1,14 @@
+{
+  "name": "zxing",
+  "scripts": {
+    "install": "napa",
+    "clean": "rm -f node_modules/zxing/wrappers/wasm/cmake_install.cmake node_modules/zxing/wrappers/wasm/CMakeCache.txt && rm -rf node_modules/zxing/wrappers/wasm/ZXingCore && rm -rf node_modules/zxing/wrappers/wasm/CMakeFiles",
+    "build": "docker run --rm -v $(pwd):/src trzeci/emscripten:sdk-tag-1.38.30-64bit ./build.sh"
+  },
+  "napa": {
+    "zxing": "nu-book/zxing-cpp"
+  },
+  "devDependencies": {
+    "napa": "3.0.0"
+  }
+}
