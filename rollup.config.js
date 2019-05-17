@@ -5,7 +5,9 @@ import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import builtins from "rollup-plugin-node-builtins";
 import workbox from "rollup-plugin-workbox-build";
+import url from "rollup-plugin-url";
 
+const publicPath = "/";
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
@@ -17,6 +19,12 @@ export default {
     file: "public/bundle.js"
   },
   plugins: [
+    url({
+      limit: 5 * 1024,
+      include: ["**/*.wasm"],
+      emitFiles: true,
+      publicPath: publicPath
+    }),
     builtins(),
     svelte({
       // enable run-time checks when not in production

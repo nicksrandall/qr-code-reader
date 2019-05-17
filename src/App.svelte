@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import ZXing from "../wasm/zxing.js";
+  import wasmUrl from "../wasm/zxing.wasm";
 
   function base64ToUint8Array(uri) {
     const binary_string =  window.atob(uri.split(",")[1]);
@@ -15,12 +16,10 @@
   const zxing = new ZXing({
       noInitialRun: true,
       locateFile(url) {
-        console.log('url', url);
+        if (url.endsWith('.wasm')) return wasmUrl;
         return url;
       },
   });
-
-  console.log(zxing);
 
   let video;
   let canvas;
@@ -56,7 +55,6 @@
   function nativeTick() {
     barcodeDetector.detect(canvas)
       .then(texts => {
-        console.log('texts', texts);
         if (texts.length) {
           let item = texts[0];
           goToSite(item.format, item.rawValue);
@@ -97,7 +95,6 @@
       });
       isBarcodeDetectorSupported(barcodeDetector)
         .then(isSupported => {
-          console.log('isSupported', isSupported);
           if (isSupported) {
             window.requestAnimationFrame(nativeTick);
           } else {
